@@ -37,6 +37,9 @@
     </v-card>
     <v-card>
         {{message}}
+        {{hh}}
+        {{mm}}
+        {{ss}}
     </v-card>
 </template>
 
@@ -52,30 +55,29 @@ export default {
             seconds: "",
             message: "",
             timerEnabled: false,
+            timer: 0,
+            hh: "",
+            mm: "",
+            ss: ""
         }
     },
 
      watch: {
         timerEnabled(value) {
-                if (value) {
-                    setTimeout(() => {
-                        this.timerCount--;
-                    }, 1000);
+                if (value === true) {
+                    this.startCountdown()
                 }
             },
 
-            timerCount: {
-                handler(value) {
-
-                    if (value > 0 && this.timerEnabled) {
-                        setTimeout(() => {
-                            this.timerCount--;
+            /*timer(value){
+                if (value > 0 && this.timerEnabled) {
+                        setInterval(() => {
+                            this.startCountdown()
                         }, 1000);
-                    }
 
-                },
-                immediate: true // This ensures the watcher is triggered upon creation
-            }
+                }
+            },*/
+            immediate: true,
 
     },
 
@@ -85,34 +87,45 @@ export default {
         },
         checkCountdown(hours, minutes, seconds){
             if (hours || minutes || seconds){
-                return [
-                    this.message = "Good! Starting countdown",
-                    this.timerEnabled = true,
-                ]
+                this.message = "Good! Starting countdown",
+                this.timerEnabled = true
             }
             else {
-                return this.message = "Ops! This is an empty countdown!"
+                return [
+                    this.message = "Ops! This is an empty countdown!",
+                    this.timerEnabled = false
+                ]
             }
         },
 
-        /*
-        startCountdown(hours, minutes, seconds){
-            const start = new Date;
-            start.setHours(hours, minutes, seconds);
-
-            function pad(num) {
-                return ("0" + parseInt(num)).substr(-2);
+        startCountdown(){
+            this.timer = this.timeToSeconds(this.hours, this.minutes, this.seconds);
+            let seconds = this.timer;
+            setInterval(() => {
+                this.hh = this.pad(Math.floor(seconds/3600));
+                this.mm = this.pad(Math.floor(seconds % 3600 / 60));
+                this.ss = this.pad(seconds % 60);
+                --seconds;
+            }, 1000);
+        },
+        
+        timeToSeconds(hours, minutes, seconds){
+            let remainingMinutes;
+            let remainingSeconds;
+            if (hours < 24){
+                remainingMinutes = hours * 60;
             }
-            function tick() {
-                var now = new Date;
-                var remain = ((start - now) / 1000);
-                var hh = pad((remain / 60 / 60) % 60);
-                var mm = pad((remain / 60) % 60);
-                var ss = pad(remain % 60);
-            setTimeout(tick, 1000);
+            if (minutes < 60){
+                remainingSeconds = remainingMinutes + (minutes * 60);
             }
-
-        }*/
+            if (seconds < 60) {
+                remainingSeconds = remainingSeconds + seconds
+            }
+            return remainingSeconds
+        },
+        pad(n) {
+            return (n < 10 ? "0" + n : n);
+        }
     }
 }
 </script>
