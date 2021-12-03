@@ -1,37 +1,47 @@
-const express = require('express')
-const cors = require('cors')
+const express = require('express') //https://expressjs.com/
+const cors = require('cors') //https://www.npmjs.com/package/cors
+const morgan = require('morgan') //https://www.npmjs.com/package/morgan
 const bodyParser = require('body-parser')
-const Sequelize = require('sequelize')
+const {Sequelize, DataTypes} = require('sequelize')
+const config = require('./config/config')
 
-//create a new express app
-
+//creates a new express app
 let app = express()
+app.use(morgan('combined'))
 app.use(cors())
 app.use(bodyParser.json())
 
-app.get('/status', (req, res) =>{
-    res.send({
-        message: "hello world!"
-    })
-})
-
-//add a Sequelize instance with SQLite
-let database = new Sequelize({
+//adda a Sequelize instance with SQLite and defines the countdown database
+const database = new Sequelize({
     dialect: 'sqlite',
     storage: './test.sqlite'
   })
-  
-  let Countdown = database.define('countdown', {
-    title: Sequelize.STRING,
-    body: Sequelize.TEXT
+
+const Countdown = database.define('Countdown', {
+    title: DataTypes.STRING,
+    hours: DataTypes.INTEGER,
+    minutes: DataTypes.INTEGER,
+    seconds: DataTypes.INTEGER
   })
 
 
-// Resets the database and launches the express app on :8081
-database
-.sync({ force: true })
+//launches the express app on what is defined by the config/config.js file
+Countdown
+.sync({ force: false })
 .then(() => {
-    app.listen(8081, () => {
-    console.log('listening to port localhost:8081')
-    })
+    app.listen(config.port)
+    console.log(`Listening to port ${config.port}`)
 })
+
+//define an endpoint for the creating a countdown
+app.route('/countdowns')
+  .post, async(req, res) =>{
+    try{
+      const countdown = await Countdown.create(req.body)
+      res.send(countdown)
+    } catch (err) {
+      res.send({
+        error: 'an error has occured'
+      })
+    }
+}

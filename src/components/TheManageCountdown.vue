@@ -1,34 +1,43 @@
 <template>
-    <h1>Countdown Manager</h1>
-        <b-alert :show="loading" variant="info">Loading...</b-alert>
-            <div v-for="countdown in countdowns" :key="countdown.id">
+    <v-card>
+    <v-card-header>Manage existing countdowns</v-card-header>
+    <v-card-text v-if="countdowns = []">
+      <p>There are no countdowns yet!</p>
+    </v-card-text>
+    <v-card-text v-else>
+      <v-alert :show="loading" variant="info">Loading...</v-alert>
+          <div v-for="countdown in countdowns" :key="countdown.id">
+          <!-- to modify -->
             <div>{{ countdown.id }}</div>
             <div>{{ countdown.title }}</div>
             <div>{{ countdown.updatedAt }}</div>
-            <div>
-                <a href="#" @click.prevent="populateCountdownToEdit(countdown)">Edit</a> -
-                <a href="#" @click.prevent="deleteCountdown(countdown.id)">Delete</a>
-            </div>
-        <div>
+          <div>
+              <a href="#" @click.prevent="populateCountdownToEdit(countdown)">Edit</a> -
+              <a href="#" @click.prevent="deleteCountdown(countdown.id)">Delete</a>
+          </div>
+          <div>
             <div :title="(model.id ? 'Edit Countdown ID#' + model.id : 'New Countdown')">
             <form @submit.prevent="saveCountdown">
-                <form-group label="Title">
-                <form-input type="text" v-model="model.title"></form-input>
-                </form-group>
-                <form-group label="Body">
-                <form-textarea rows="4" v-model="model.body"></form-textarea>
-                </form-group>
-                <div>
-                <b-btn type="submit" variant="success">Save Countdown</b-btn>
-                </div>
+              <form-group label="Title">
+              <form-input type="text" v-model="model.title"></form-input>
+              </form-group>
+              <form-group label="Body">
+              <form-textarea rows="4" v-model="model.body"></form-textarea>
+              </form-group>
+              <div>
+              <b-btn type="submit" variant="success">Save Countdown</b-btn>
+              </div>
             </form>
             </div>
+          </div>
         </div>
-    </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
 import api from '@/api'
+
 export default {
   data () {
     return {

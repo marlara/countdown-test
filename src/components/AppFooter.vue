@@ -1,7 +1,7 @@
 <template>
-  <footer>
+  <v-footer app dark padless>
     <p>CC-BY — Lara Marziali — {{ year }} </p>
-  </footer>
+  </v-footer>
 </template>
 
 <script>

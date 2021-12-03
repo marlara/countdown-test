@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "@/components/HelloWorld.vue";
-import CountdownManager from '@/components/CountdownMain.vue'
+import Home from "@/views/Home.vue";
+import CountdownManager from '@/views/CountdownMain.vue'
 
 const routes = [
   {
