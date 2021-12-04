@@ -1,19 +1,33 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/Home.vue";
 import CountdownManager from '@/views/CountdownMain.vue'
+import Login from "@/components/TheLogin.vue";
+import store from "@/state.js"
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/countdown-manager",
     name: "CountdownManager",
     component: CountdownManager,
-  }
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
 
+  
   /*
     component: ()=> import("/views/QuizShow.vue"),
     props: true,
@@ -45,5 +59,20 @@ const router = createRouter({
     })
   }
 });
+
+router.beforeEach((to, from, next) => { //check before each route if the state logged is true
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.state.isUserLoggedIn) {
+      next({ name: 'Login' })
+    } else {
+      next() // go to wherever I'm going
+    }
+  } else {
+    next() // does not require auth, make sure to always call next()! 
+  }
+})
+
 
 export default router;

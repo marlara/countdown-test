@@ -20,9 +20,11 @@
     "sqlite3": "^5.0.2",
     "tar": "^6.1.11",
     "uuid": "^8.3.2",
-    "vue": "^3.0.0",
+    "vue": "^3.2.23",
     "vue-router": "^4.0.12",
     "vuetify": "^3.0.0-alpha.0",
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

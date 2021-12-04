@@ -1,54 +1,64 @@
 <template>
-    <v-card>
-        <v-card-header>Create a new countdown</v-card-header>
-        <v-card-text>Define your countdown</v-card-text>
-        <v-form>
-                <v-text-field
-                v-model="title"
-                label="Title: what this countdown is for"
-                required
-                ></v-text-field>
-                
-        </v-form>
-        <div class="select">
-            <select class="select-text" v-model="hours" 
-                name="Select hours">
-                <option value="0" disabled selected>Select hour</option>
-                <option v-for="n in selectTime(0,24)" :value="n" :key="n">
-                    {{n}} hours
-                </option>
-            </select>
-            <select class="select-text" v-model="minutes" 
-                name="Select minutes">
-                <option value="0" disabled selected>Select minutes</option>
-                <option v-for="n in selectTime(0,59)" :value="n" :key="n">
-                    {{n}} minutes
-                </option>
-            </select>
-            <select class="select-text" v-model="seconds" 
-                name="Select seconds">
-                <option value="0" disabled selected>Select seconds</option>
-                <option v-for="n in selectTime(0,59)" :value="n" :key="n">
-                    {{n}} seconds
-                </option>
-            </select>
+    <v-app>
+    <v-card class="mx-auto my-12" elevation="2" max-width="1000">
+        <v-card-title>Create a new countdown</v-card-title>
+        <v-card-subtitle>Define your countdown</v-card-subtitle>
+        <v-card-text>You have to set at least a hour, a minute or a second</v-card-text>
+        <div class="mx-auto my-6 px-6">
+            <v-form>
+                    <v-text-field
+                    v-model="title"
+                    label="Title: what this countdown is for"
+                    required
+                    ></v-text-field>
+                    
+            </v-form>
+            <div class="select">
+                <select class="select-text" v-model="hours" 
+                    name="Select hours">
+                    <option value="0" disabled selected>Select hour</option>
+                    <option v-for="n in selectTime(0,24)" :value="n" :key="n">
+                        {{n}} hours
+                    </option>
+                </select>
+                <select class="select-text" v-model="minutes" 
+                    name="Select minutes">
+                    <option value="0" disabled selected>Select minutes</option>
+                    <option v-for="n in selectTime(0,59)" :value="n" :key="n">
+                        {{n}} minutes
+                    </option>
+                </select>
+                <select class="select-text" v-model="seconds" 
+                    name="Select seconds">
+                    <option value="0" disabled selected>Select seconds</option>
+                    <option v-for="n in selectTime(0,59)" :value="n" :key="n">
+                        {{n}} seconds
+                    </option>
+                </select>
+            </div>
         </div>
-        <v-btn elevation="2" @click="checkCountdown(this.hours, this.minutes, this.seconds)">Start</v-btn>
-        <v-btn elevation="2" @click="pause()">Pause</v-btn>
-        <v-btn elevation="2" @click="reset()">Reset</v-btn>
+        <div class="mx-auto my-12">
+            <v-btn class="px-4" elevation="2" color="teal" @click="checkCountdown(this.hours, this.minutes, this.seconds)">Start</v-btn>
+            <v-btn elevation="2" color="teal" @click="pause()">Pause</v-btn>
+            <v-btn elevation="2" color="teal" @click="reset()">Reset</v-btn>
+        </div>
     </v-card>
-    <v-card>
+    <v-card elevation="2">
         {{message}}
         {{hh}}
         {{mm}}
         {{ss}}
     </v-card>
+    </v-app>
 </template>
 
 
 
 <script>
+
+
 export default {
+    
     data() {
         return {
             title: "",

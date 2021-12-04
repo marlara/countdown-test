@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <app-header />
-    <app-main /> <!-- you can use transitions to change the main content, see how it works! https://vueschool.io/lessons/route-transitions -->
+    <app-main /> 
     <app-footer />
   </v-app>
 </template>
