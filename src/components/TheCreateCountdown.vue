@@ -13,27 +13,29 @@
         <div class="select">
             <select class="select-text" v-model="hours" 
                 name="Select hours">
-                <option value="" disabled selected>Select hour</option>
+                <option value="0" disabled selected>Select hour</option>
                 <option v-for="n in selectTime(0,24)" :value="n" :key="n">
                     {{n}} hours
                 </option>
             </select>
             <select class="select-text" v-model="minutes" 
                 name="Select minutes">
-                <option value="" disabled selected>Select minutes</option>
+                <option value="0" disabled selected>Select minutes</option>
                 <option v-for="n in selectTime(0,59)" :value="n" :key="n">
                     {{n}} minutes
                 </option>
             </select>
             <select class="select-text" v-model="seconds" 
                 name="Select seconds">
-                <option value="" disabled selected>Select seconds</option>
+                <option value="0" disabled selected>Select seconds</option>
                 <option v-for="n in selectTime(0,59)" :value="n" :key="n">
                     {{n}} seconds
                 </option>
             </select>
         </div>
         <v-btn elevation="2" @click="checkCountdown(this.hours, this.minutes, this.seconds)">Start</v-btn>
+        <v-btn elevation="2" @click="pause()">Pause</v-btn>
+        <v-btn elevation="2" @click="reset()">Reset</v-btn>
     </v-card>
     <v-card>
         {{message}}
@@ -50,11 +52,11 @@ export default {
     data() {
         return {
             title: "",
-            hours: "",
-            minutes: "",
-            seconds: "",
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
             message: "",
-            timerEnabled: false,
+            timerEnabled: false, //used to check if the countdown is ok
             timer: 0,
             hh: "",
             mm: "",
@@ -63,29 +65,19 @@ export default {
     },
 
      watch: {
-        timerEnabled(value) {
+        timerEnabled(value) { //watch the timerEnabled: if true it can starts the countdown
                 if (value === true) {
                     this.startCountdown()
                 }
             },
-
-            /*timer(value){
-                if (value > 0 && this.timerEnabled) {
-                        setInterval(() => {
-                            this.startCountdown()
-                        }, 1000);
-
-                }
-            },*/
             immediate: true,
-
     },
 
     methods:{
-        selectTime(start,stop){
+        selectTime(start,stop){ //creates the input selection for hours, minutes and seconds
             return new Array(stop-start).fill(start).map((n,i)=>n+i);
         },
-        checkCountdown(hours, minutes, seconds){
+        checkCountdown(hours, minutes, seconds){ //checks if the countdown is properly set, if so, set the timerEnabled as true
             if (hours || minutes || seconds){
                 this.message = "Good! Starting countdown",
                 this.timerEnabled = true
@@ -98,22 +90,27 @@ export default {
             }
         },
 
-        startCountdown(){
+        startCountdown(){ //the true countdown, uses the timeToSeconds() and the pan() functions
             this.timer = this.timeToSeconds(this.hours, this.minutes, this.seconds);
             let seconds = this.timer;
             setInterval(() => {
-                this.hh = this.pad(Math.floor(seconds/3600));
-                this.mm = this.pad(Math.floor(seconds % 3600 / 60));
-                this.ss = this.pad(seconds % 60);
-                --seconds;
+                if(seconds >= 0 && this.timerEnabled === true){ //stop the countdown
+                    this.hh = this.pad(Math.floor(seconds/3600));
+                    let divisor_for_minutes = seconds % (60 * 60);
+                    this.mm = this.pad(Math.floor(divisor_for_minutes / 60));
+                    let divisor_for_seconds = divisor_for_minutes % 60;
+                    this.ss = this.pad(Math.ceil(divisor_for_seconds));
+                    --seconds;
+                }
             }, 1000);
+            
         },
         
-        timeToSeconds(hours, minutes, seconds){
+        timeToSeconds(hours, minutes, seconds){ //transforms the userinput into seconds
             let remainingMinutes;
             let remainingSeconds;
             if (hours < 24){
-                remainingMinutes = hours * 60;
+                remainingMinutes = hours * 3600;
             }
             if (minutes < 60){
                 remainingSeconds = remainingMinutes + (minutes * 60);
@@ -123,8 +120,16 @@ export default {
             }
             return remainingSeconds
         },
-        pad(n) {
+        pad(n) { //pad a 0 if needed displaying the countdown numbers
             return (n < 10 ? "0" + n : n);
+        },
+
+        pause() {
+            this.timerEnabled = false;
+        },
+
+        reset(){
+
         }
     }
 }
