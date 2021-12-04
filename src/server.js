@@ -12,36 +12,56 @@ app.use(cors())
 app.use(bodyParser.json())
 
 //adda a Sequelize instance with SQLite and defines the countdown database
-const database = new Sequelize({
-    dialect: 'sqlite',
-    storage: './test.sqlite'
-  })
+const database = new Sequelize(
+  config.db.database,
+  config.db.user,
+  config.db.password,
+  config.db.options
+  )
+
+//define the model
 
 const Countdown = database.define('Countdown', {
-    title: DataTypes.STRING,
     hours: DataTypes.INTEGER,
     minutes: DataTypes.INTEGER,
     seconds: DataTypes.INTEGER
   })
 
+//enpoint for all the countdowns
+
+app.get('/countdowns', async (req, res) =>{
+  try {
+    let countdowns = null
+    countdowns = await Countdown.findAll({
+        })
+    res.send(countdowns)
+    } catch (err) {
+    res.status(500).send({
+        error: 'an error has occured trying to fetch the countdowns'
+    })
+  }
+});
+
+//create a new countdown
+
+app.post('/countdowns', async(req, res) =>{
+  try{
+  const countdown = await Countdown.create(req.body)
+  res.send(countdown)
+  } catch (err) {
+  res.send({
+      error: 'an error has occured trying to create the countdown'
+  })
+  }
+});
 
 //launches the express app on what is defined by the config/config.js file
-Countdown
+database
 .sync({ force: false })
 .then(() => {
     app.listen(config.port)
     console.log(`Listening to port ${config.port}`)
 })
 
-//define an endpoint for the creating a countdown
-app.route('/countdowns')
-  .post, async(req, res) =>{
-    try{
-      const countdown = await Countdown.create(req.body)
-      res.send(countdown)
-    } catch (err) {
-      res.send({
-        error: 'an error has occured'
-      })
-    }
-}
+
+

@@ -7,33 +7,16 @@
     position: relative;
     background-color: transparent;
     width: 350px;
+    margin: 10px 10px 10px 0;
     padding: 10px 10px 10px 0;
     font-size: 18px;
     border-radius: 0;
     border: none;
-    border-bottom: 1px solid rgba(0,0,0, 0.12);
-}
-
-/* Remove focus */
-.select-text:focus {
-    outline: none;
-    border-bottom: 1px solid rgba(0,0,0, 0);
-}
-
-    /* Use custom arrow */
-.select .select-text {
-    appearance: none;
-    -webkit-appearance:none
+    border-bottom: 2px solid rgba(0,0,0, 0.12);
 }
 
 .select:after {
     position: absolute;
     top: 18px;
     right: 10px;
-}
-
-
-/* active state */
-.select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-    width: 50%;
 }

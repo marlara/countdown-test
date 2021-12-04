@@ -1,6 +1,6 @@
 <template>
-    <v-card>
-    <v-card-header>Manage existing countdowns</v-card-header>
+    <v-card class="mx-auto my-12" elevation="2" max-width="1000">
+    <v-card-header>Countdown created</v-card-header>
     <v-card-text v-if="countdowns = []">
       <p>There are no countdowns yet!</p>
     </v-card-text>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import api from '@/api'
+import api from '@/api.js'
 
 export default {
   data () {
@@ -46,8 +46,9 @@ export default {
       model: {}
     }
   },
-  async created () {
-    this.refreshCountdowns()
+  async mounted () {
+    //const countdownId = this.$store.state.route.params.countdownId //the synchronization vuex-router
+    this.countdowns = await api.getCountdowns()
   },
 
   methods: {
