@@ -52,7 +52,7 @@
     :hh="this.hh"
     :mm="this.mm"
     :ss="this.ss"
-    :timerEnabled="this.timerEnabled"
+    :timerPauesed="this.timerPaused"
     :timer="this.timer"
     :message="this.message"
   />
@@ -62,6 +62,7 @@
 <script>
 import GoCountdown from '../components/TheGoCountdown.vue'
 import api from '@/api.js'
+
 export default {
   components: { 
     GoCountdown
@@ -77,6 +78,7 @@ export default {
                 mess: "You have to set at least an hour, a minute or a second"
             },
             timerEnabled: false, //used to check if the countdown is ok
+            timerPaused: false,
             timer: 0,
             hh: "",
             mm: "",
@@ -117,7 +119,7 @@ export default {
       startCountdown (){ //the true countdown, uses the timeToSeconds() and the pan() functions
           this.timer = this.timeToSeconds(this.hours, this.minutes, this.seconds);
           let seconds = this.timer;
-          setInterval(() => {
+          this.counter = setInterval(() => {
               if(seconds >= 0 && this.timerEnabled === true){ //stop the countdown
                   this.hh = this.pad(Math.floor(seconds/3600));
                   let divisor_for_minutes = seconds % (60 * 60);
@@ -149,6 +151,7 @@ export default {
           return (n < 10 ? "0" + n : n);
       },
       pause () {
+          this.timerPaused = true;
           this.timerEnabled = false;
           this.message = {
             value: "info", 
@@ -156,7 +159,7 @@ export default {
           }
       },
       reset(){
-          clearInterval (this.startCountdown)
+          clearInterval (this.counter)
           this.submitted = false;
           this.timer = 0;
           this.hours = 0;

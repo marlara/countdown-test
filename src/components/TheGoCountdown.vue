@@ -6,7 +6,7 @@
     >{{message.mess}}</v-alert>
     <v-expand-transition>
         <v-card class="mx-auto my-6" elevation="2"
-        v-show="timerEnabled">
+        v-show="timer">
             <v-row no-gutters justify="space-around">
                 <v-col align="center">
                     <v-card-text class="text-h2 ma-4">{{hh}}</v-card-text>
@@ -30,16 +30,24 @@ export default {
         hh: {type: [Number, String], required:false},
         mm: {type: [Number, String], required:false},
         ss: {type: [Number, String], required:false},
-        timerEnabled: {type: Boolean, required:false},
         message: {type: Object, required:false},
         timer: {type: Number,  required:false}
     },
     
     data(){
         return {
-            
+            new_timer: null,
         }
     },
+
+    watch: {
+    timerPaused (value) { //watch the timerEnabled: if true it can starts the countdown
+            if (value === true) {
+                this.stopCountdown()
+            }
+        }
+    },
+
     methods: {
         typeAlert(){
             if (this.message.value=="success"){
@@ -52,6 +60,10 @@ export default {
                 return "info"
             }
         },
+
+        stopCountdown(){
+
+        }
     }
 }
 </script>
