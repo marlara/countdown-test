@@ -1,3 +1,4 @@
+
 <template>
     <v-alert class="mx-auto" 
     v-show="message"
@@ -39,7 +40,6 @@ export default {
             
         }
     },
-
     methods: {
         typeAlert(){
             if (this.message.value=="success"){

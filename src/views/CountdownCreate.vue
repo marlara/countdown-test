@@ -62,12 +62,10 @@
 <script>
 import GoCountdown from '../components/TheGoCountdown.vue'
 import api from '@/api.js'
-
 export default {
   components: { 
     GoCountdown
     },
-
   data() {
         return {
             submitted: false,
@@ -85,7 +83,6 @@ export default {
             ss: ""
         }
     },
-
   watch: {
     timerEnabled (value) { //watch the timerEnabled: if true it can starts the countdown
             if (value === true) {
@@ -93,7 +90,6 @@ export default {
             }
         }
   },
-
   methods:{
       selectTime (start,stop){ //creates the input selection for hours, minutes and seconds
           return new Array(stop-start).fill(start).map((n,i)=>n+i);
@@ -118,7 +114,6 @@ export default {
               ]
           }
       },
-
       startCountdown (){ //the true countdown, uses the timeToSeconds() and the pan() functions
           this.timer = this.timeToSeconds(this.hours, this.minutes, this.seconds);
           let seconds = this.timer;
@@ -153,7 +148,6 @@ export default {
       pad (n) { //pad a 0 if needed displaying the countdown numbers
           return (n < 10 ? "0" + n : n);
       },
-
       pause () {
           this.timerEnabled = false;
           this.message = {
@@ -161,9 +155,9 @@ export default {
             mess: "Countdown paused"
           }
       },
-
       reset(){
           clearInterval (this.startCountdown)
+          this.submitted = false;
           this.timer = 0;
           this.hours = 0;
           this.minutes = 0;
@@ -177,7 +171,6 @@ export default {
             mess: "Ok, countdown cleared!"
           }
       },
-
       async saveCountdown (hours, minutes, seconds){
           const countdown = {
               "hours": hours,
