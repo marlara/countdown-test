@@ -3,12 +3,13 @@
   <h1>Countdown Creator</h1>
    <v-card class="mx-auto my-12" elevation="2" max-width="1000">
        <v-img
-        class="align-end"
+        class="align-top"
         src="@/assets/time_header.jpg"
         >
         <v-card-title>Create a new countdown</v-card-title>
         </v-img>
-        <v-card-subtitle class="pt-6">Use the selectors below</v-card-subtitle>
+        <v-card-subtitle class="pt-6">Use the selectors below.</v-card-subtitle>
+        <v-card-text>When clicking "Start", the countdown will be registered in the database. Clicking "Pause" will pause the countdown, click it again to restart the count. The button "Reset" resets the count to 0.</v-card-text>
         <div class="mx-auto my-6 px-6">
             <div class="select">
                 <select class="select-text" v-model="hours" 

@@ -42,6 +42,18 @@ app.get('/countdowns', async (req, res) =>{
   }
 });
 
+app.get('/countdowns/:id', async (req, res) =>{
+  try {
+    let countdown = null
+    countdown = await Countdown.findByPk(req.params.id)
+    res.send(countdown)
+  } catch (err) {
+    res.status(500).send({
+      error: 'an error has occured trying to fetch the countdown'
+    })
+  }
+});
+
 //create a new countdown
 
 app.post('/countdowns', async(req, res) =>{

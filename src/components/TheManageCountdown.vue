@@ -1,6 +1,11 @@
 <template>
     <v-card class="mx-auto my-12" elevation="2" max-width="1000">
-    <v-card-title>Countdown created</v-card-title>
+    <v-img
+        class="align-top"
+        src="@/assets/home_2.jpg"
+        >
+      <v-card-title>Countdown created</v-card-title>
+    </v-img>
     <v-card-text v-if="!countdowns">
       <p>There are no countdowns yet! Have you started the server?</p>
     </v-card-text>
@@ -38,8 +43,7 @@ export default {
     return {
       loading: false,
       countdowns: null,
-      dataChanged: false,
-      model: {}
+      dataChanged: false
     }
   },
 
@@ -56,12 +60,8 @@ export default {
 
     async deleteCountdown (id) {
       if (confirm('Are you sure you want to delete this countdown?')) {
-        // if we are editing a post we deleted, remove it from the form
-        if (this.model.id === id) {
-          this.model = {}
-        }
         await api.deleteCountdown(id)
-        await this.refreshCountdowns()
+        await api.getCountdowns()
       }
     }
   }

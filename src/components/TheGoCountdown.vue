@@ -21,14 +21,13 @@
             </v-row>
         </v-card>
         <v-card class="mx-auto my-6" elevation="2"
-        v-show="endTimer">
+        v-show="endTimer" width="1000">
         <v-card-title class="justify-center"> TIME ENDED!</v-card-title>
-        <v-img
-        class="pb-4"
-        width="1000"
-        src="@/assets/end.png"
-        >
-        </v-img>
+            <v-img
+            class="pb-4"
+            src="@/assets/end.png"
+            >
+            </v-img>
         </v-card>
 </template>
 

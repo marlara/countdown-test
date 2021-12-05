@@ -12,6 +12,6 @@ const client = axios.create({
         return client.post('/countdowns', data)
     },
     deleteCountdown (id) {
-        return this.execute('delete', `/countdown/${id}`)
+        return client.delete(`/countdowns/${id}`)
     }
 }

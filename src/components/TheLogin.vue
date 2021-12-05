@@ -1,23 +1,25 @@
 <template>
-  <v-card class="mx-auto my-12" elevation="2" max-width="1000">
-      <v-card-title>Login</v-card-title>
-        <v-text-field
-          label="Username"
-          v-model="username"
+    <v-card class="mx-auto my-12" elevation="2" max-width="1000">
+        <v-card-title>Login</v-card-title>
+        <v-text-field 
+        class="px-12 pt-4"
+        label="Username"
+        v-model="username"
         ></v-text-field>
         <v-text-field
-          label="Password"
-          type="password"
-          v-model="password"
+        class="px-12"
+        label="Password"
+        type="password"
+        v-model="password"
         ></v-text-field>
-        <div class="danger-alert" v-html="error" />
-        <v-card-actions class="justify-center py-4">
-        <v-btn
-          @click="login">
-          Login
-        </v-btn>
-        </v-card-actions>
-  </v-card>
+            <div class="danger-alert" v-html="error" />
+            <v-card-actions class="justify-center py-4">
+            <v-btn elevation="2"
+            @click="login">
+            Login
+            </v-btn>
+            </v-card-actions>
+    </v-card>
 </template>
 
 
