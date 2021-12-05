@@ -2,12 +2,17 @@
   <v-app>
   <h1>Countdown Creator</h1>
    <v-card class="mx-auto my-12" elevation="2" max-width="1000">
+       <v-img
+        class="align-end"
+        src="@/assets/time_header.jpg"
+        >
         <v-card-title>Create a new countdown</v-card-title>
-        <v-card-subtitle>Define your countdown</v-card-subtitle>
-        <v-card-text>You have to set at least a hour, a minute or a second</v-card-text>
+        </v-img>
+        <v-card-subtitle class="pt-6">Use the selectors below</v-card-subtitle>
         <div class="mx-auto my-6 px-6">
             <div class="select">
                 <select class="select-text" v-model="hours" 
+                    :disabled="submitted"
                     name="Select hours">
                     <option value="0" disabled selected>Select hour</option>
                     <option v-for="n in selectTime(0,24)" :value="n" :key="n">
@@ -15,6 +20,7 @@
                     </option>
                 </select>
                 <select class="select-text" v-model="minutes" 
+                    :disabled="submitted"
                     name="Select minutes">
                     <option value="0" disabled selected>Select minutes</option>
                     <option v-for="n in selectTime(0,60)" :value="n" :key="n">
@@ -22,6 +28,7 @@
                     </option>
                 </select>
                 <select class="select-text" v-model="seconds" 
+                    :disabled="submitted"
                     name="Select seconds">
                     <option value="0" disabled selected>Select seconds</option>
                     <option v-for="n in selectTime(0,60)" :value="n" :key="n">
@@ -31,9 +38,14 @@
             </div>
         </div>
         <v-card-actions class="justify-center">
-            <v-btn class="px-4" elevation="2" @click="checkCountdown(this.hours, this.minutes, this.seconds)">Start</v-btn>
-            <v-btn elevation="2" @click="pause()">Pause</v-btn>
-            <v-btn elevation="2" @click="reset()">Reset</v-btn>
+            <v-btn class="px-4" elevation="2" 
+            @click="checkCountdown(this.hours, this.minutes, this.seconds)"
+            :disabled="submitted"
+            >Start</v-btn>
+            <v-btn elevation="2" 
+            @click="pause()">{{button.text}}</v-btn>
+            <v-btn elevation="2" 
+            @click="reset()">Reset</v-btn>
         </v-card-actions>
     </v-card>
   <go-countdown 
@@ -58,10 +70,14 @@ export default {
 
   data() {
         return {
+            submitted: false,
             hours: 0,
             minutes: 0,
             seconds: 0,
-            message: null,
+            message: {
+                value: "info", 
+                mess: "You have to set at least an hour, a minute or a second"
+            },
             timerEnabled: false, //used to check if the countdown is ok
             timer: 0,
             hh: "",
@@ -84,13 +100,20 @@ export default {
       },
       checkCountdown (hours, minutes, seconds){ //checks if the countdown is properly set, if so, set the timerEnabled as true
           if (hours || minutes || seconds){
-              this.message = "Good! Starting countdown",
+              this.message = {
+                  value: "success",
+                  mess: "Good! I'm counting"
+                },
               this.timerEnabled = true
+              this.submitted = true
               this.saveCountdown(hours, minutes, seconds)
           }
           else {
               return [
-                  this.message = "Ops! This is an empty countdown!",
+                  this.message = {
+                      value: "error",
+                      mess: "Ops! This is an empty countdown!"
+                  },
                   this.timerEnabled = false
               ]
           }
@@ -106,6 +129,7 @@ export default {
                   this.mm = this.pad(Math.floor(divisor_for_minutes / 60));
                   let divisor_for_seconds = divisor_for_minutes % 60;
                   this.ss = this.pad(Math.ceil(divisor_for_seconds));
+                  --this.timer;
                   --seconds;
               }
           }, 1000);
@@ -132,6 +156,10 @@ export default {
 
       pause () {
           this.timerEnabled = false;
+          this.message = {
+            value: "info", 
+            mess: "Countdown paused"
+          }
       },
 
       reset(){
@@ -144,6 +172,10 @@ export default {
           this.mm = "";
           this.ss = "";
           this.timerEnabled = false;
+          this.message = {
+            value: "info", 
+            mess: "Ok, countdown cleared!"
+          }
       },
 
       async saveCountdown (hours, minutes, seconds){
