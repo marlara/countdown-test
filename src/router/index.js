@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/Home.vue";
-import CountdownManager from '@/views/CountdownMain.vue'
+import CountdownCreate from '@/views/CountdownCreate.vue'
 import Login from "@/components/TheLogin.vue";
 import store from "@/state.js"
 
@@ -14,9 +14,9 @@ const routes = [
     }
   },
   {
-    path: "/countdown-manager",
-    name: "CountdownManager",
-    component: CountdownManager,
+    path: "/countdown-create",
+    name: "CountdownCreate",
+    component: CountdownCreate,
     meta: {
       requiresAuth: true
     },

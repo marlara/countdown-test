@@ -3,7 +3,7 @@
       <v-app-bar-title>Countdown App</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-btn @click="$router.push('/')">Home page</v-btn>
-      <v-btn @click="$router.push('/countdown-manager')">Countdown Manager</v-btn>
+      <v-btn @click="$router.push('/countdown-create')">Create Countdown</v-btn>
       <v-btn @click="logout">Log Out</v-btn>
     </v-app-bar>
 </template>
