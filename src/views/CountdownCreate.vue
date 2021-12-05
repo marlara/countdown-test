@@ -14,7 +14,7 @@
                 <select class="select-text" v-model="hours" 
                     :disabled="submitted"
                     name="Select hours">
-                    <option value="0" disabled selected>Select hour</option>
+                    <option value="0" disabled selected>Select hours</option>
                     <option v-for="n in selectTime(0,24)" :value="n" :key="n">
                         {{n}} hours
                     </option>
@@ -43,7 +43,7 @@
             :disabled="submitted"
             >Start</v-btn>
             <v-btn elevation="2" 
-            @click="pause()">Pause</v-btn>
+            @click="paused ? pause() : restart()">Pause</v-btn>
             <v-btn elevation="2" 
             @click="reset()">Reset</v-btn>
         </v-card-actions>
@@ -52,7 +52,6 @@
     :hh="this.hh"
     :mm="this.mm"
     :ss="this.ss"
-    :timerPauesed="this.timerPaused"
     :timer="this.timer"
     :message="this.message"
   />
@@ -70,6 +69,7 @@ export default {
   data() {
         return {
             submitted: false,
+            paused: false,
             hours: 0,
             minutes: 0,
             seconds: 0,
@@ -79,7 +79,7 @@ export default {
             },
             timerEnabled: false, //used to check if the countdown is ok
             timerPaused: false,
-            timer: 0,
+            timer: "",
             hh: "",
             mm: "",
             ss: ""
@@ -151,17 +151,35 @@ export default {
           return (n < 10 ? "0" + n : n);
       },
       pause () {
-          this.timerPaused = true;
-          this.timerEnabled = false;
+          this.paused = !this.paused;
+          clearInterval (this.counter)
           this.message = {
             value: "info", 
             mess: "Countdown paused"
           }
       },
+
+      restart() {
+          this.paused = !this.paused;
+          let seconds = this.timer;
+          this.restart = setInterval(() => {
+              if(seconds >= 0 && this.timerEnabled === true){ //stop the countdown
+                  this.hh = this.pad(Math.floor(seconds/3600));
+                  let divisor_for_minutes = seconds % (60 * 60);
+                  this.mm = this.pad(Math.floor(divisor_for_minutes / 60));
+                  let divisor_for_seconds = divisor_for_minutes % 60;
+                  this.ss = this.pad(Math.ceil(divisor_for_seconds));
+                  --this.timer;
+                  --seconds;
+              }
+          }, 1000);
+          console.log("restarted")
+      },
+
       reset(){
           clearInterval (this.counter)
           this.submitted = false;
-          this.timer = 0;
+          this.timer = "";
           this.hours = 0;
           this.minutes = 0;
           this.seconds = 0;

@@ -2,7 +2,7 @@
     <v-card class="mx-auto my-12" elevation="2" max-width="1000">
     <v-card-title>Countdown created</v-card-title>
     <v-card-text v-if="!countdowns">
-      <p>There are no countdowns yet!</p>
+      <p>There are no countdowns yet! Have you started the server?</p>
     </v-card-text>
     <v-card-text v-else>
       <p class="mb-4">If you want to delete a countdown use the button.</p>

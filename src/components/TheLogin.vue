@@ -11,11 +11,12 @@
           v-model="password"
         ></v-text-field>
         <div class="danger-alert" v-html="error" />
-        <br>
+        <v-card-actions class="justify-center py-4">
         <v-btn
           @click="login">
           Login
         </v-btn>
+        </v-card-actions>
   </v-card>
 </template>
 

@@ -4,16 +4,15 @@
     v-show="message"
     :type="typeAlert()"
     >{{message.mess}}</v-alert>
-    <v-expand-transition>
         <v-card class="mx-auto my-6" elevation="2"
-        v-show="timer">
+        v-show="goTimer">
             <v-row no-gutters justify="space-around">
                 <v-col align="center">
-                    <v-card-text class="text-h2 ma-4">{{hh}}</v-card-text>
+                    <v-card-text class="text-h2 ma-4 time">{{hh}}</v-card-text>
                 </v-col>
                 <div class="text-h3 my-4">:</div>
                 <v-col align="center">
-                    <v-card-text class="text-h2 ma-4">{{mm}}</v-card-text>
+                    <v-card-text class="text-h2 ma-4 time">{{mm}}</v-card-text>
                 </v-col>
                 <div class="text-h3 my-4">:</div>
                 <v-col align="center">
@@ -21,7 +20,16 @@
                 </v-col>
             </v-row>
         </v-card>
-    </v-expand-transition>
+        <v-card class="mx-auto my-6" elevation="2"
+        v-show="endTimer">
+        <v-card-title class="justify-center"> TIME ENDED!</v-card-title>
+        <v-img
+        class="pb-4"
+        width="1000"
+        src="@/assets/end.png"
+        >
+        </v-img>
+        </v-card>
 </template>
 
 <script>
@@ -31,19 +39,25 @@ export default {
         mm: {type: [Number, String], required:false},
         ss: {type: [Number, String], required:false},
         message: {type: Object, required:false},
-        timer: {type: Number,  required:false}
+        timer: {type: [Number, String],  required:false}
     },
     
     data(){
         return {
-            new_timer: null,
+            goTimer: null,
+            endTimer: null
         }
     },
 
     watch: {
-    timerPaused (value) { //watch the timerEnabled: if true it can starts the countdown
-            if (value === true) {
-                this.stopCountdown()
+    timer (value) { //watch the timerEnabled: if true it can starts the countdown
+            if (value) {
+                this.goTimer = true
+                this.endTimer = false
+            }
+            if (value === 0 | value === -1){
+                this.goTimer = false
+                this.endTimer = true
             }
         }
     },
@@ -60,10 +74,6 @@ export default {
                 return "info"
             }
         },
-
-        stopCountdown(){
-
-        }
     }
 }
 </script>
