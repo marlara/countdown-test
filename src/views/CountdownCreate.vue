@@ -43,7 +43,7 @@
             :disabled="submitted"
             >Start</v-btn>
             <v-btn elevation="2" 
-            @click="pause()">{{button.text}}</v-btn>
+            @click="pause()">Pause</v-btn>
             <v-btn elevation="2" 
             @click="reset()">Reset</v-btn>
         </v-card-actions>

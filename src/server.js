@@ -1,13 +1,13 @@
 const express = require('express') //https://expressjs.com/
 const cors = require('cors') //https://www.npmjs.com/package/cors
-const morgan = require('morgan') //https://www.npmjs.com/package/morgan
+//const morgan = require('morgan') //https://www.npmjs.com/package/morgan
 const bodyParser = require('body-parser')
 const {Sequelize, DataTypes} = require('sequelize')
 const config = require('./config/config')
 
 //creates a new express app
 let app = express()
-app.use(morgan('combined'))
+//app.use(morgan('combined'))
 app.use(cors())
 app.use(bodyParser.json())
 

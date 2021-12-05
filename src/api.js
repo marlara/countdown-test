@@ -11,9 +11,6 @@ const client = axios.create({
     createCountdown (data) {
         return client.post('/countdowns', data)
     },
-    updateCountdown (id, data) {
-        return this.execute('put', `/countdown/${id}`, data)
-    },
     deleteCountdown (id) {
         return this.execute('delete', `/countdown/${id}`)
     }
