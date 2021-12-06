@@ -6,15 +6,16 @@
     >{{message.mess}}</v-alert>
         <v-card class="mx-auto my-6" elevation="2"
         v-show="goTimer">
+        <v-card-text class="text-h6 text-center mt-2"
+        v-show="loading()"
+        >Loading...</v-card-text>
             <v-row no-gutters justify="space-around">
                 <v-col align="center">
                     <v-card-text class="text-h2 ma-4 time">{{hh}}</v-card-text>
                 </v-col>
-                <div class="text-h3 my-4">:</div>
                 <v-col align="center">
                     <v-card-text class="text-h2 ma-4 time">{{mm}}</v-card-text>
                 </v-col>
-                <div class="text-h3 my-4">:</div>
                 <v-col align="center">
                     <v-card-text class="text-h2 ma-4">{{ss}}</v-card-text>
                 </v-col>
@@ -58,10 +59,22 @@ export default {
                 this.goTimer = false
                 this.endTimer = true
             }
-        }
+            if (!value){
+                this.goTimer = false
+            }
+        },
     },
 
+
     methods: {
+        loading(){
+            if (this.hh || this.mm || this.ss){
+                return false
+            } else{
+                return true
+            }
+        },
+
         typeAlert(){
             if (this.message.value=="success"){
                 return "success"

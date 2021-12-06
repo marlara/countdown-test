@@ -1,13 +1,11 @@
 const express = require('express') //https://expressjs.com/
 const cors = require('cors') //https://www.npmjs.com/package/cors
-//const morgan = require('morgan') //https://www.npmjs.com/package/morgan
 const bodyParser = require('body-parser')
 const {Sequelize, DataTypes} = require('sequelize')
 const config = require('./config/config')
 
 //creates a new express app
 let app = express()
-//app.use(morgan('combined'))
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -27,7 +25,8 @@ const Countdown = database.define('Countdown', {
     seconds: DataTypes.INTEGER
   })
 
-//enpoint for all the countdowns
+//routes
+//route for all the countdowns
 
 app.get('/countdowns', async (req, res) =>{
   try {
@@ -54,7 +53,7 @@ app.get('/countdowns/:id', async (req, res) =>{
   }
 });
 
-//create a new countdown
+//route for creating a new countdown
 
 app.post('/countdowns', async(req, res) =>{
   try{

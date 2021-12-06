@@ -44,7 +44,7 @@
             :disabled="submitted"
             >Start</v-btn>
             <v-btn elevation="2" 
-            @click="paused ? pause() : restart()">Pause</v-btn>
+            @click="notPaused ? pause() : restart()">Pause</v-btn>
             <v-btn elevation="2" 
             @click="reset()">Reset</v-btn>
         </v-card-actions>
@@ -70,7 +70,7 @@ export default {
   data() {
         return {
             submitted: false,
-            paused: false,
+            notPaused: true,
             hours: 0,
             minutes: 0,
             seconds: 0,
@@ -79,11 +79,10 @@ export default {
                 mess: "You have to set at least an hour, a minute or a second"
             },
             timerEnabled: false, //used to check if the countdown is ok
-            timerPaused: false,
-            timer: "",
-            hh: "",
-            mm: "",
-            ss: ""
+            timer: null,
+            hh: null,
+            mm: null,
+            ss: null
         }
     },
   watch: {
@@ -93,6 +92,10 @@ export default {
             }
         }
   },
+  unmounted(){
+      clearInterval(this.counter)
+  },
+
   methods:{
       selectTime (start,stop){ //creates the input selection for hours, minutes and seconds
           return new Array(stop-start).fill(start).map((n,i)=>n+i);
@@ -119,6 +122,9 @@ export default {
       },
       startCountdown (){ //the true countdown, uses the timeToSeconds() and the pan() functions
           this.timer = this.timeToSeconds(this.hours, this.minutes, this.seconds);
+          this.hh = "";
+          this.mm = "";
+          this.ss = "";
           let seconds = this.timer;
           this.counter = setInterval(() => {
               if(seconds >= 0 && this.timerEnabled === true){ //stop the countdown
@@ -152,7 +158,7 @@ export default {
           return (n < 10 ? "0" + n : n);
       },
       pause () {
-          this.paused = !this.paused;
+          this.notPaused = !this.notPaused;
           clearInterval (this.counter)
           this.message = {
             value: "info", 
@@ -160,10 +166,10 @@ export default {
           }
       },
 
-      restart() {
-          this.paused = !this.paused;
-          let seconds = this.timer;
-          this.restart = setInterval(() => {
+      restart () {
+          this.notPaused = !this.notPaused;
+          let seconds = this.timer -1 ;
+          this.counter = setInterval(() => {
               if(seconds >= 0 && this.timerEnabled === true){ //stop the countdown
                   this.hh = this.pad(Math.floor(seconds/3600));
                   let divisor_for_minutes = seconds % (60 * 60);
@@ -174,19 +180,22 @@ export default {
                   --seconds;
               }
           }, 1000);
-          console.log("restarted")
+          this.message = {
+            value: "info", 
+            mess: "Countdown restarted"
+          }
       },
 
       reset(){
           clearInterval (this.counter)
           this.submitted = false;
-          this.timer = "";
+          this.timer = null;
           this.hours = 0;
           this.minutes = 0;
           this.seconds = 0;
-          this.hh = "";
-          this.mm = "";
-          this.ss = "";
+          this.hh = null;
+          this.mm = null;
+          this.ss = null;
           this.timerEnabled = false;
           this.message = {
             value: "info", 

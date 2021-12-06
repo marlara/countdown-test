@@ -1,8 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/Home.vue";
 import CountdownCreate from '@/views/CountdownCreate.vue'
-import Login from "@/components/TheLogin.vue";
-import store from "@/state.js"
+import Login from "@/views/Login.vue";
+import store from "@/state.js";
+import NotFound from "@/views/NotFound.vue"
 
 const routes = [
   {
@@ -27,27 +28,12 @@ const routes = [
     component: Login,
   },
 
-  
-  /*
-    component: ()=> import("/views/QuizShow.vue"),
-    props: true,
-    beforeEnter(to){ // all this is to have the NotFound if the data doesn't exists in the json. It's called Navigation Guard
-      const exists = sourceData.quizzes.find(
-        quiz => quiz.id === parseInt(to.params.id)
-      )
-      if(!exists) return { 
-        name: 'NotFound',
-        params: { pathMatch: to.path.split('/').slice(1)}, //this is to retreive also the wrong url in the address
-        query: to.query,
-        hash: to.hash,
-      }
-    }
-  },
+
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: ()=> import("/views/NotFound.vue"),
-  }*/
+    component: NotFound,
+  }
 ];
 
 const router = createRouter({

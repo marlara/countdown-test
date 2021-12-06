@@ -26,7 +26,7 @@
           <td>{{ countdown.hours }}</td>
           <td>{{ countdown.minutes }}</td>
           <td>{{ countdown.seconds }}</td>
-          <td>{{ countdown.createdAt }}</td>
+          <td>{{ format_date(countdown.createdAt) }}</td>
           <td><v-btn href="#" @click.prevent="deleteCountdown(countdown.id)">Delete</v-btn></td>
           </tr>
         </thead>
@@ -37,6 +37,7 @@
 
 <script>
 import api from '@/api.js'
+import moment from 'moment'
 
 export default {
   data () {
@@ -53,9 +54,10 @@ export default {
   },
 
   methods: {
-    getData(){
-      //const data = countdowns.data
-      
+    format_date(value){
+      if (value) {
+        return moment(String(value)).format('YYYY- MM - DD  HH:MM:SS')
+      }
     },
 
     async deleteCountdown (id) {
