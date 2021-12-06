@@ -11,7 +11,7 @@
     </v-card-text>
     <v-card-text v-else>
       <p class="mb-4">If you want to delete a countdown use the button.</p>
-      <table ref="table">
+      <table>
         <thead>
         <tr>
           <th>Id</th>
@@ -42,7 +42,6 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      loading: false,
       countdowns: null
     }
   },
@@ -50,7 +49,6 @@ export default {
   async mounted () {
     this.countdowns = await api.getCountdowns()
   },
-
 
   methods: {
     format_date(value){
@@ -61,8 +59,8 @@ export default {
 
     async deleteCountdown (id) {
       if (confirm('Are you sure you want to delete this countdown?')) {
-        const response = await api.deleteCountdown(id)
-        return response
+        const response = await api.deleteCountdown(id);
+        return [response, this.loadingKey]
       }
     }
   }

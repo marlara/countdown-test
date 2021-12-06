@@ -75,7 +75,6 @@ app.delete('/countdowns/:id', async (req, res) =>{
     let countdown = null
     countdown = await Countdown.findByPk(req.params.id)
     countdown.destroy();
-    res.redirect('/countdowns')
   } catch (err) {
     res.status(500).send({
       error: 'an error has occured trying to deleting the countdown'
