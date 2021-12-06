@@ -60,7 +60,7 @@ export default {
     async deleteCountdown (id) {
       if (confirm('Are you sure you want to delete this countdown?')) {
         const response = await api.deleteCountdown(id);
-        return [response, this.loadingKey]
+        return response
       }
     }
   }
