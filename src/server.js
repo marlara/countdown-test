@@ -41,6 +41,8 @@ app.get('/countdowns', async (req, res) =>{
   }
 });
 
+//route for getting a single countdown
+
 app.get('/countdowns/:id', async (req, res) =>{
   try {
     let countdown = null
@@ -63,6 +65,21 @@ app.post('/countdowns', async(req, res) =>{
   res.send({
       error: 'an error has occured trying to create the countdown'
   })
+  }
+});
+
+//route for deleting a countdown
+
+app.delete('/countdowns/:id', async (req, res) =>{
+  try {
+    let countdown = null
+    countdown = await Countdown.findByPk(req.params.id)
+    countdown.destroy();
+    res.redirect('/countdowns')
+  } catch (err) {
+    res.status(500).send({
+      error: 'an error has occured trying to deleting the countdown'
+    })
   }
 });
 
