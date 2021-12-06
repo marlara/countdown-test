@@ -1,4 +1,10 @@
 # countdown-app
+### How it works
+
+* First start the server with `node ./src/serve`
+* Start vue with `npm run serve`
+* Create countdowns or delete existing ones
+
 
 ## Project setup
 ```
